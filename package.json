@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "sim": "node sim/run.mjs",
-    "test": "node --test test/sim.test.mjs",
+    "test": "node --test test/sim.test.mjs test/spectrum.test.mjs",
     "calibrate": "N=300 node sim/calibrate.mjs",
-    "build": "esbuild web/src/main.js --bundle --minify --format=iife --outfile=web/app.js",
+    "build": "esbuild web/src/main.js --bundle --minify --format=iife --outfile=web/app.js && esbuild web/src/machine-main.js --bundle --minify --format=iife --outfile=web/machine.js",
     "dev": "esbuild web/src/main.js --bundle --sourcemap --outfile=web/app.js --servedir=web",
     "shot": "node scripts/shot.mjs"
   },

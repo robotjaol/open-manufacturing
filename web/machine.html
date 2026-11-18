@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Manufacturing · Machine twin 2040-CNV-202</title>
+<meta name="description" content="3D digital twin of a conveyor head drive unit with exploded view, bearing inspector, FMEA, defect-frequency analysis and model export.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#analysis">Skip to analysis</a>
+<header class="top">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <h1>Open Manufacturing</h1>
+      <p>Machine twin · 2040-CNV-202 head drive unit</p>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Views">
+    <a href="index.html">Plant view</a>
+    <a href="machine.html" aria-current="page">Machine twin</a>
+  </nav>
+  <div class="top-actions">
+    <span class="badge" title="All numbers come from a seeded simulation and draft FMEA ratings.">Synthetic operating data</span>
+    <a class="link" href="https://github.com/robotjaol/open-manufacturing">Repository</a>
+  </div>
+</header>
+
+<main>
+  <section class="stage" aria-label="Interactive 3D machine">
+    <div class="viewport-wrap">
+      <div id="viewport" tabindex="-1"></div>
+      <div class="toolbar" role="toolbar" aria-label="Viewer controls">
+        <button id="btn-whole" type="button">Show whole machine</button>
+        <button id="btn-xray" type="button" aria-pressed="false">X-ray surroundings</button>
+        <button id="btn-labels" type="button" aria-pressed="true">Tag labels</button>
+        <button id="btn-glb" type="button">Download 3D model (GLB)</button>
+      </div>
+      <div class="legend3d" aria-label="Priority legend">
+        <span><i class="s0"></i>Low</span><span><i class="s1"></i>Medium</span><span><i class="s3"></i>High</span>
+      </div>
+      <div class="explode">
+        <label for="explode">Exploded view</label>
+        <input id="explode" type="range" min="0" max="100" value="0">
+      </div>
+      <p class="hint">Drag to orbit, scroll to zoom, click a part for its FMEA. The inspector on the right is the drive-end bearing at 7x, half-sectioned.</p>
+    </div>
+
+    <aside class="panel" aria-label="Machine health and FMEA">
+      <div class="kpis kpis4" id="kpis"></div>
+      <div class="seg" role="group" aria-label="Detection basis">
+        <button type="button" id="basis-now" aria-pressed="true">Today (rounds and trips)</button>
+        <button type="button" id="basis-twin" aria-pressed="false">With twin monitoring</button>
+      </div>
+      <h2 class="panel-h">Components by priority</h2>
+      <ul class="findings" id="components"></ul>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </aside>
+
+    <div class="timebar">
+      <button id="btn-play" type="button" class="play" aria-pressed="false">Play timeline</button>
+      <div class="scrub">
+        <label for="scrub" class="sr">Time cursor, hour of the 21 day window</label>
+        <input id="scrub" type="range" min="0" max="503" step="1" value="503">
+        <div id="scrub-marks" class="scrub-marks" aria-hidden="true"></div>
+      </div>
+      <output id="clock" class="clock"></output>
+    </div>
+  </section>
+
+  <section id="analysis" class="charts viz-root" aria-label="Analysis">
+    <div class="sec-head">
+      <h2>FMEA and bearing analysis</h2>
+      <p>Eleven failure modes on the drive unit, ranked before and after the twin's monitoring, and what the bearing's own frequencies say about whether vibration can see it.</p>
+    </div>
+
+    <div class="callout" id="callout" role="note"></div>
+
+    <div class="grid2">
+      <figure class="card">
+        <figcaption>
+          <h3>Risk priority number by failure mode</h3>
+          <p>RPN = severity x occurrence x detection. The gap between the bars is what monitoring is worth, if the draft ratings hold.</p>
+        </figcaption>
+        <div class="chart" id="ch-rpn"></div>
+        <div class="legend-row" id="lg-rpn"></div>
+        <details class="tableview"><summary>Show data table</summary><div id="tb-rpn"></div></details>
+      </figure>
+
+      <figure class="card">
+        <figcaption>
+          <h3>Illustrative velocity spectrum</h3>
+          <p id="sp-sub">Synthetic spectrum at the time cursor. Dashed lines are the bearing's characteristic frequencies from its geometry.</p>
+        </figcaption>
+        <div class="seg small" id="sp-pick" role="group" aria-label="Bearing"></div>
+        <div class="chart" id="ch-spec"></div>
+        <details class="tableview"><summary>Defect frequency calculator</summary>
+          <form id="calc" class="calc" aria-label="Bearing defect frequency calculator"></form>
+          <div id="tb-freq"></div>
+        </details>
+      </figure>
+    </div>
+
+    <figure class="card wide">
+      <figcaption>
+        <h3>Draft FMEA worksheet</h3>
+        <p id="fmea-note"></p>
+      </figcaption>
+      <div class="actions"><button type="button" id="btn-csv" class="btn">Download FMEA as CSV</button></div>
+      <div class="table-scroll"><table id="tb-fmea" class="fmea"></table></div>
+    </figure>
+  </section>
+
+  <section class="method" aria-label="Method and limits">
+    <div class="sec-head"><h2>How to read this twin</h2></div>
+    <div class="grid3" id="method"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>MIT licence. FMEA ratings are a draft by the author, not a team consensus. ISO 15243 is used for bearing failure-mode names, AIAG-VDA 2019 for the severity-first idea, and the kinematic bearing formulas are standard. Geometry values are assumed or example values. Verify before any decision.</p>
+</footer>
+<script src="machine.js"></script>
+</body>
+</html>

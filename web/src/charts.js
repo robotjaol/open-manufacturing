@@ -156,8 +156,8 @@ export function groupedBars(cfg) {
   const host = cfg.host;
   host.querySelectorAll('svg').forEach((s) => s.remove());
   const W = host.clientWidth || 520;
-  const rowH = 54;
-  const m = { l: 92, r: 70, t: 8, b: 26 };
+  const rowH = cfg.rowH || 54;
+  const m = { l: cfg.left || 92, r: 70, t: 8, b: 26 };
   const H = m.t + m.b + rowH * cfg.cats.length;
   const iw = W - m.l - m.r;
   const max = niceMax(Math.max(...cfg.cats.flatMap((c) => c.values)) * 1.02);

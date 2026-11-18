@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer-core';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-const [name = 'desk', w = '1440', h = '900', q = ''] = process.argv.slice(2);
+const [name = 'desk', w = '1440', h = '900', q = '', file = ''] = process.argv.slice(2);
 const root = path.resolve('web');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json' };
 const srv = http.createServer((req, res) => {
@@ -19,7 +19,7 @@ const logs = [];
 page.on('console', (m) => logs.push(m.type() + ': ' + m.text()));
 page.on('pageerror', (e) => logs.push('PAGEERROR: ' + e.message));
 await page.setViewport({ width: +w, height: +h, deviceScaleFactor: 1 });
-await page.goto(`http://localhost:${port}/?${q}`, { waitUntil: 'load' });
+await page.goto(`http://localhost:${port}/${file}?${q}`, { waitUntil: 'load' });
 await new Promise((r) => setTimeout(r, 4500));
 await page.screenshot({ path: `shots/${name}.png`, fullPage: process.env.FULL === '1' });
 console.log(logs.slice(0, 15).join('\n') || 'no console output');

@@ -1,0 +1,23 @@
+{
+  "asset": "2040-CNV-202",
+  "name": "Transfer conveyor head drive unit",
+  "note": "Design parameters are illustrative assumptions for this synthetic twin. Replace with nameplate and datasheet values.",
+  "drive": { "motorRpm": 1450, "gearRatio": 21, "drumDiameterM": 0.16 },
+  "bearings": [
+    {
+      "tag": "2040-BRG-202A",
+      "label": "Head shaft bearing, drive end (pillow block)",
+      "shaft": "head",
+      "geometry": { "N": 9, "ballDiameterMm": 11.11, "pitchDiameterMm": 53.5, "contactAngleDeg": 0 },
+      "geometrySource": "assumed, 6207-class deep groove ball bearing; replace with the datasheet"
+    },
+    {
+      "tag": "2040-MTR-202-DE",
+      "label": "Motor drive-end bearing",
+      "shaft": "motor",
+      "geometry": { "N": 9, "ballDiameterMm": 7.94, "pitchDiameterMm": 39.04, "contactAngleDeg": 0 },
+      "geometrySource": "example geometry for a 6205 bearing as published by a condition-monitoring vendor (Fabrico); verify against the datasheet"
+    }
+  ],
+  "vibrationBandNote": "ISO 10816-1 style velocity limits are defined for a measurement band that starts near 10 Hz (verify against ISO 20816-1)."
+}
