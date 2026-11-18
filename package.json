@@ -1,0 +1,32 @@
+{
+  "name": "open-manufacturing",
+  "version": "1.0.0",
+  "description": "Open synthetic-data digital twin of a packaging line: micro-stop detection, bearing-wear early warning, interactive 3D plant.",
+  "main": "index.js",
+  "scripts": {
+    "sim": "node sim/run.mjs",
+    "test": "node --test test/sim.test.mjs",
+    "calibrate": "N=300 node sim/calibrate.mjs",
+    "build": "esbuild web/src/main.js --bundle --minify --format=iife --outfile=web/app.js",
+    "dev": "esbuild web/src/main.js --bundle --sourcemap --outfile=web/app.js --servedir=web",
+    "shot": "node scripts/shot.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robotjaol/open-manufacturing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robotjaol/open-manufacturing/issues"
+  },
+  "homepage": "https://github.com/robotjaol/open-manufacturing#readme",
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "puppeteer-core": "^25.18.1",
+    "three": "^0.170.0"
+  },
+  "type": "module",
+  "private": true
+}

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Manufacturing · Line 2040 micro-stop observatory</title>
+<meta name="description" content="Open, synthetic-data digital twin of a packaging line: interactive 3D plant, micro-stop detection and bearing-wear early warning, with every method and limit documented.">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#charts">Skip to analysis</a>
+<header class="top">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <h1>Open Manufacturing</h1>
+      <p>Line 2040 · secondary packaging · micro-stop observatory</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="badge" title="Every number in this page comes from a seeded simulation, not from a real plant.">Synthetic operating data</span>
+    <a class="link" href="https://github.com/robotjaol/open-manufacturing">Open the repository</a>
+  </div>
+</header>
+
+<main>
+  <section class="stage" aria-label="Interactive 3D plant model">
+    <div class="viewport-wrap">
+      <div id="viewport" tabindex="-1"></div>
+      <div class="toolbar" role="toolbar" aria-label="Viewer controls">
+        <button id="btn-whole" type="button">Show whole unit</button>
+        <button id="btn-xray" type="button" aria-pressed="false">X-ray surroundings</button>
+        <details class="layers">
+          <summary>Layers</summary>
+          <label><input type="checkbox" data-layer="guards" checked> Guards and fence</label>
+          <label><input type="checkbox" data-layer="sensors" checked> Photoeyes</label>
+          <label><input type="checkbox" data-layer="labels" checked> Tag labels</label>
+          <label><input type="checkbox" data-layer="status" checked> Status halos</label>
+        </details>
+      </div>
+      <div class="legend3d" aria-label="Status legend">
+        <span><i class="s0"></i>Normal</span><span><i class="s1"></i>Advisory</span><span><i class="s2"></i>Alert</span>
+      </div>
+      <p class="hint">Drag to orbit, scroll to zoom, click equipment to inspect. Stop pulses are stylised and drawn at the true relative frequency.</p>
+    </div>
+
+    <aside class="panel" aria-label="Findings and equipment">
+      <div class="kpis" id="kpis"></div>
+      <h2 class="panel-h">Findings at cursor</h2>
+      <ul class="findings" id="findings"></ul>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </aside>
+
+    <div class="timebar">
+      <button id="btn-play" type="button" class="play" aria-pressed="false">Play timeline</button>
+      <div class="scrub">
+        <label for="scrub" class="sr">Time cursor, hour of the 21 day window</label>
+        <input id="scrub" type="range" min="0" max="503" step="1" value="0">
+        <div id="scrub-marks" class="scrub-marks" aria-hidden="true"></div>
+      </div>
+      <output id="clock" class="clock"></output>
+    </div>
+  </section>
+
+  <section id="charts" class="charts viz-root" aria-label="Analysis">
+    <div class="sec-head">
+      <h2>What the logs miss</h2>
+      <p>Operators log the long stops. The short ones add up to most of the lost time, and the fastest-growing station is the one whose bearing is wearing out.</p>
+    </div>
+
+    <div class="grid2">
+      <figure class="card">
+        <figcaption>
+          <h3>Micro-stops per hour, by station</h3>
+          <p>Daily mean of photoeye-captured stops. Triangles mark the first alarm. Click to move the time cursor.</p>
+        </figcaption>
+        <div class="chart" id="ch-rate"></div>
+        <details class="tableview"><summary>Show data table</summary><div id="tb-rate"></div></details>
+      </figure>
+
+      <figure class="card">
+        <figcaption>
+          <h3>Bearing vibration at 2040-VT-202</h3>
+          <p>Hourly RMS velocity (thin) and 24 h median (bold) against ISO 10816-1 zone limits. Dashed: projected crossing into zone D.</p>
+        </figcaption>
+        <div class="chart" id="ch-vib"></div>
+        <details class="tableview"><summary>Show data table</summary><div id="tb-vib"></div></details>
+      </figure>
+    </div>
+
+    <div class="grid2">
+      <figure class="card">
+        <figcaption>
+          <h3>Captured versus manually logged stops</h3>
+          <p>By duration band. Hours of stop time, so the short bands show how much they weigh in total.</p>
+        </figcaption>
+        <div class="chart" id="ch-bands"></div>
+        <div class="legend-row" id="lg-bands"></div>
+        <details class="tableview"><summary>Show data table</summary><div id="tb-bands"></div></details>
+      </figure>
+
+      <figure class="card">
+        <figcaption>
+          <h3>Where the 21 day OEE loss goes</h3>
+          <p>Hours of lost production time on the line. Reported OEE equals true OEE: logging only moves loss between buckets.</p>
+        </figcaption>
+        <div class="chart" id="ch-loss"></div>
+        <div class="legend-row" id="lg-loss"></div>
+        <div id="oee-note" class="note"></div>
+      </figure>
+    </div>
+
+    <figure class="card wide">
+      <figcaption>
+        <h3>Seven detector iterations on the same Monte Carlo benchmark</h3>
+        <p>300 simulated 60 day runs per version, evaluation seeds kept apart from calibration seeds. Targets were fixed in the Define stage before any run.</p>
+      </figcaption>
+      <div class="table-scroll"><table id="tb-detect"></table></div>
+    </figure>
+
+    <figure class="card wide econ" id="econ"></figure>
+  </section>
+
+  <section class="method" aria-label="Method and limits">
+    <div class="sec-head">
+      <h2>Method, and what this does not prove</h2>
+    </div>
+    <div class="grid3" id="method"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>MIT licence. Standards are used as design references (ISO 22400-2, ISO 14224, ISO 10816-1, ISA-5.1 style tags), not claimed as compliance. The data is synthetic and the 3D model is generated from primitives. Verify any figure before using it in a decision.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
